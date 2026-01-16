@@ -55,75 +55,78 @@ promela-llm-generation/
 ---
 
 ## 🛠️ Yêu cầu hệ thống & Cài đặt (Installation)
-1. Yêu cầu phần cứng & Công cụ
-Python: Phiên bản 3.10 trở lên.
 
-GPU: Khuyến nghị NVIDIA GPU (VRAM >= 16GB) để chạy Fine-tuning và Load Model 4-bit.
+**1. Yêu cầu phần cứng & Công cụ**
+- Python: Phiên bản 3.10 trở lên.
 
-SPIN Model Checker: Bắt buộc cài đặt để chạy module kiểm lỗi.
+- GPU: Khuyến nghị NVIDIA GPU (VRAM >= 16GB) để chạy Fine-tuning và Load Model 4-bit.
 
-Linux (Debian/Ubuntu): sudo apt-get install spin
+- SPIN Model Checker: Bắt buộc cài đặt để chạy module kiểm lỗi.
 
-MacOS/Windows: Tải và biên dịch từ SpinRoot.
+- Linux (Debian/Ubuntu): sudo apt-get install spin
 
-Ollama: Cần thiết nếu chạy Inference Local trong Promela_Code.ipynb. Tải tại ollama.com.
+- MacOS/Windows: Tải và biên dịch từ SpinRoot.
 
-2. Cài đặt thư viện Python
+- Ollama: Cần thiết nếu chạy Inference Local trong Promela_Code.ipynb. Tải tại ollama.com.
+
+**2. Cài đặt thư viện Python**
 Chạy lệnh sau để cài đặt các gói phụ thuộc:
 
-Bash
+```Bash
 
 pip install -r requirements.txt
+```
 (Nội dung file requirements.txt được cung cấp trong repo này)
 
 ## 🚀 Hướng dẫn sử dụng (Usage Workflow)
-Bước 1: Chuẩn bị dữ liệu
-Chạy notebook notebooks/01_Data_Prep/BEEM_DataSet.ipynb.
+**Bước 1: Chuẩn bị dữ liệu**
+- Chạy notebook notebooks/01_Data_Prep/BEEM_DataSet.ipynb.
 
-Input: Dữ liệu thô từ thư mục data/beem_models_data/.
++ Input: Dữ liệu thô từ thư mục data/beem_models_data/.
 
-Process: Script sẽ trích xuất cặp <Instruction, Promela Code> từ file XML.
++ Process: Script sẽ trích xuất cặp <Instruction, Promela Code> từ file XML.
 
-Output: File data/promela_finetune.jsonl.
++ Output: File data/promela_finetune.jsonl.
 
-Bước 2: Huấn luyện mô hình (Fine-tuning)
-Chạy notebook notebooks/02_Training/FineTunning_LLM.ipynb.
+**Bước 2: Huấn luyện mô hình (Fine-tuning)**
+- Chạy notebook notebooks/02_Training/FineTunning_LLM.ipynb.
 
-Load model nền (DeepSeek-Coder hoặc CodeLlama).
+- Load model nền (DeepSeek-Coder hoặc CodeLlama).
 
-Thực hiện Fine-tuning với cấu hình QLoRA (Quantized Low-Rank Adaptation).
+- Thực hiện Fine-tuning với cấu hình QLoRA (Quantized Low-Rank Adaptation).
 
-Lưu Adapter Weights vào thư mục output.
+- Lưu Adapter Weights vào thư mục output.
 
-Bước 3: Khởi tạo RAG (Retrieval)
-Sử dụng notebooks/03_RAG_Core/RAG_LangChain.ipynb.
+**Bước 3: Khởi tạo RAG (Retrieval)**
+- Sử dụng notebooks/03_RAG_Core/RAG_LangChain.ipynb.
 
-Hệ thống sẽ đọc tài liệu hướng dẫn Promela chuẩn.
+- Hệ thống sẽ đọc tài liệu hướng dẫn Promela chuẩn.
 
-Tạo Vector Database (sử dụng ChromaDB) để lưu trữ kiến thức cú pháp.
+- Tạo Vector Database (sử dụng ChromaDB) để lưu trữ kiến thức cú pháp.
 
-Bước 4: Chạy sinh mã & Tự sửa lỗi (Inference Loop)
-Chạy notebook notebooks/04_Inference_Verify/Promela_Code.ipynb.
+**Bước 4: Chạy sinh mã & Tự sửa lỗi (Inference Loop)**
 
-Đây là quy trình khép kín quan trọng nhất của dự án:
+- Chạy notebook notebooks/04_Inference_Verify/Promela_Code.ipynb.
 
-User Input: Nhập mô tả hệ thống cần kiểm chứng.
+- Đây là quy trình khép kín quan trọng nhất của dự án:
 
-RAG: Tìm kiếm cú pháp Promela liên quan.
++ User Input: Nhập mô tả hệ thống cần kiểm chứng.
 
-Generation: LLM sinh mã ban đầu.
++ Generation: LLM sinh mã ban đầu.
+  
++ Verification: Gọi lệnh hệ thống spin -a output.pml.
+  
++ RAG: Tìm kiếm cú pháp Promela liên quan.
 
-Verification: Gọi lệnh hệ thống spin -a output.pml.
-
-Correction: Nếu SPIN báo lỗi (Syntax/Compile error), lỗi sẽ được gửi lại vào LLM để sinh lại mã mới tối ưu hơn.
++ Correction: Nếu SPIN báo lỗi (Syntax/Compile error), lỗi sẽ được gửi lại vào LLM để sinh lại mã mới tối ưu hơn.
 
 ## 📊 Phương pháp & Kết quả (Methodology)
-Dự án giải quyết vấn đề khan hiếm dữ liệu Promela và độ phức tạp của cú pháp bằng kiến trúc:
+- Dự án giải quyết vấn đề khan hiếm dữ liệu Promela và độ phức tạp của cú pháp bằng kiến trúc:
 
-Fine-tuning: Giúp Model học được cấu trúc đặc thù của ngôn ngữ Promela (channels, process types, atomic sequences).
++ Fine-tuning: Giúp Model học được cấu trúc đặc thù của ngôn ngữ Promela (channels, process types, atomic sequences).
 
-RAG: Giảm thiểu "ảo giác" (hallucination) bằng cách cung cấp tra cứu thời gian thực vào tài liệu chuẩn.
++ RAG: Giảm thiểu "ảo giác" (hallucination) bằng cách cung cấp tra cứu thời gian thực vào tài liệu chuẩn.
 
-Self-Correction: Tự động sửa các lỗi biên dịch cơ bản mà không cần con người can thiệp.
++ Self-Correction: Tự động sửa các lỗi biên dịch cơ bản mà không cần con người can thiệp.
 
-Kết quả: Hệ thống giảm đáng kể tỷ lệ lỗi cú pháp so với Zero-shot prompting và có khả năng sinh được các đoạn mã phức tạp như giao thức mạng, hệ thống phân tán.
+=> Kết quả: Hệ thống giảm đáng kể tỷ lệ lỗi cú pháp so với Zero-shot prompting và có khả năng sinh được các đoạn mã phức tạp như giao thức mạng, hệ thống phân tán.
