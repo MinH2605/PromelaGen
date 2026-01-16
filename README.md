@@ -37,17 +37,17 @@ promela-llm-generation/
 ├── notebooks/                  # Mã nguồn (Jupyter Notebooks)
 │   ├── 01_Data_Prep/
 │   │   ├── BEEM_DataSet.ipynb  # Trích xuất dữ liệu, convert XML -> JSONL
+│   │   ├──  Promela_Code.ipynb  # Sinh mô tả cho đoạn mã Promela với các code dữ liệu Stack V2
 │   │   └── CheckFileData.ipynb # Kiểm tra thống kê token và định dạng file
 │   │
 │   ├── 02_Training/
-│   │   └── FineTunning_LLM.ipynb # Huấn luyện LLM với QLoRA/PEFT
+│   │   └── FineTunning_LLM.ipynb # Huấn luyện LLM với QLoRA/PEFT (GPT-OSS:20b)
 │   │
 │   ├── 03_RAG_Core/
 │   │   └── RAG_LangChain.ipynb   # Xây dựng Vector DB và RAG Pipeline
 │   │
 │   └── 04_Inference_Verify/
-│       ├── Inference.ipynb       # Chạy sinh mã thử nghiệm (Demo)
-│       └── Promela_Code.ipynb    # Pipeline chính: Sinh mã -> Chạy SPIN -> Sửa lỗi
-│
+│       └── Inference.ipynb       # Chạy sinh mã thử nghiệm (Demo)
+│                                 # Pipeline chính: Sinh mã -> Chạy SPIN -> Sửa lỗi
 ├── requirements.txt            # Danh sách thư viện Python cần thiết
 └── README.md                   # Tài liệu hướng dẫn này
