@@ -56,6 +56,8 @@ promela-llm-generation/
 
 ## 🛠️ Yêu cầu hệ thống & Cài đặt (Installation)
 
+
+
 **1. Yêu cầu phần cứng & Công cụ**
 - Python: Phiên bản 3.10 trở lên.
 
@@ -79,6 +81,9 @@ pip install -r requirements.txt
 (Nội dung file requirements.txt được cung cấp trong repo này)
 
 ## 🚀 Hướng dẫn sử dụng (Usage Workflow)
+
+<img width="1381" height="769" alt="Tiểu luận Promela drawio" src="https://github.com/user-attachments/assets/76cae5af-c8db-4549-87d7-0a11ea373818" />
+
 **Bước 1: Chuẩn bị dữ liệu**
 - Chạy notebook notebooks/01_Data_Prep/BEEM_DataSet.ipynb.
 
